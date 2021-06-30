@@ -1,55 +1,52 @@
 <template>
-  <div class="content">
-    <h2 class="content__title">
-      Want to know how many days of military service {{ conscriptName }} has left? You came to the right place.
-    </h2>
-    <div class="service-info">
-      <h3 class="service-info__intro">
-        In total {{ conscriptName }} has to serve
-        <span class="highlight">
-          {{ serviceLenght }}
-        </span>
-        days in the army. Their service started on
-        <span class="highlight">
-          {{ serviceStartDay }}
-        </span>
-        of
-        <span class="highlight">
-          {{ serviceStartMonth }}
-        </span>
-        in
-        <span class="highlight">
-          {{ serviceStartYear }}
-        </span>
+  <div class="service-info">
+    <h3 class="service-info__total-text">
+      In total {{ conscriptName }} has to serve
+      <span class="highlight">
+        {{ serviceLenght }}
+      </span>
+      days in the army.
+    </h3>
+    <div v-if="serviceStarted">
+      <h3 class="service-info__intro-text">
+        Their service started on
+      <span class="highlight">
+        {{ serviceStartDay }} of {{ serviceStartMonth }} {{ serviceStartYear }}
+      </span>
       </h3>
       <h1
         v-if="!serviceIsDone"
         class="service-info__service-text"
       >
-        {{ tjCounter }} days left of service
+        {{ conscriptName }} has
+        <span class="highlight">
+          {{ tjCounter }} days
+        </span>
+        left of service
       </h1>
       <h1
         v-else
         class="service-info__service-text"
       >
-        Service completed {{ serviceCompletedCounter }} days ago on
+        {{ conscriptName }} completed service {{ serviceCompletedCounter }} days ago on
         <span class="highlight">
-          {{ serviceEndDay }}
+          {{ serviceEndDay }} of {{ serviceEndMonth }} {{ serviceEndYear }}
         </span>
-        of
+      </h1>
+    </div>
+    <div v-else>
+      <h1 class="service-info__intro-text">
+        Their service starts in
         <span class="highlight">
-          {{ serviceEndMonth }}
+          {{ serviceStartsCounter }}
         </span>
-        in
-        <span class="highlight">
-          {{ serviceEndYear }}
-        </span>
+        days
       </h1>
     </div>
   </div>
 </template>
 <script>
-import { format, differenceInDays, addDays, compareDesc } from 'date-fns';
+import { format, differenceInDays, addDays, compareDesc, compareAsc } from 'date-fns';
 
 export default {
   name: 'Content',
@@ -88,7 +85,7 @@ export default {
       if (dateComparison == -1) {
         return true;
       } else {
-        return false
+        return false;
       }
     },
     tjCounter() {
@@ -96,17 +93,33 @@ export default {
     },
     serviceCompletedCounter() {
       return differenceInDays (new Date(), this.serviceEndDate);
+    },
+    serviceStartsCounter() {
+      return differenceInDays (this.serviceStartDate, new Date());
+    },
+    serviceStarted() {
+      const dateComparison = compareDesc(new Date(), this.serviceStartDate);
+
+      if (dateComparison == -1 || dateComparison == 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 }
 </script>
 <style scoped lang="scss">
-  .content {
+  .service-info {
     padding: 1em;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    justify-content: space-evenly;
   }
 
-  .content__title,
-  .service-info__intro,
+  .service-info__total-text,
+  .service-info__intro-text,
   .service-info__service-text {
     width: 100%;
     text-align: center;
@@ -114,9 +127,7 @@ export default {
     margin-bottom: 1.5em;
   }
 
-  .service-info {
-    .highlight {
-      border-bottom: 3px solid $highlight-color;
-    }
+ .highlight {
+    border-bottom: 3px solid $highlight-color;
   }
 </style>
