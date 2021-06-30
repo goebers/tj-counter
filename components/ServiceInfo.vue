@@ -3,9 +3,9 @@
     <h3 class="service-info__total-text">
       In total {{ conscriptName }} has to serve
       <span class="highlight">
-        {{ serviceLenght }}
+        {{ serviceLenght }} days
       </span>
-      days in the army.
+      in the army.
     </h3>
     <div v-if="serviceStarted">
       <h3 class="service-info__intro-text">
@@ -22,13 +22,17 @@
         <span class="highlight">
           {{ tjCounter }} days
         </span>
-        left of service
+        left
       </h1>
       <h1
         v-else
         class="service-info__service-text"
       >
-        {{ conscriptName }} completed service {{ serviceCompletedCounter }} days ago on
+        {{ conscriptName }} completed service
+        <span class="highlight">
+          {{ serviceCompletedCounter }} days
+        </span>
+        ago on
         <span class="highlight">
           {{ serviceEndDay }} of {{ serviceEndMonth }} {{ serviceEndYear }}
         </span>
@@ -38,9 +42,8 @@
       <h1 class="service-info__intro-text">
         Their service starts in
         <span class="highlight">
-          {{ serviceStartsCounter }}
+          {{ serviceStartsCounter }} days
         </span>
-        days
       </h1>
     </div>
   </div>
