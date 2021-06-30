@@ -2,7 +2,7 @@ export default {
   target: 'static',
 
   head: {
-    title: 'tj-counter',
+    title: `${process.env.CONSCRIPT_NAME} TJ COUNTER`,
     htmlAttrs: {
       lang: 'en'
     },
