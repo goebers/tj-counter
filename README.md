@@ -9,4 +9,4 @@ To run this cool TJ counter app on your local machine you need to have Node.js &
 
 Developed and tested using Node.js version 14.9.0 & NPM version 6.14.8
 
-Check the live site [here](tj.roba.gg)
+Check the live site [here](https://tj.roba.gg/)
