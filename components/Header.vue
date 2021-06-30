@@ -19,7 +19,6 @@
   .header {
     display: flex;
     padding: 1em;
-    border-bottom: 1px solid #e1d798;
 
     &__title {
       font-size: 2em;
