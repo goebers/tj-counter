@@ -27,5 +27,10 @@ export default {
     '@nuxtjs/style-resources',
     '@nuxtjs/dotenv'
   ],
-  components: true
+  components: true,
+  env: {
+    START_DATE: process.env.START_DATE,
+    SERVICE_DAYS: process.env.SERVICE_DAYS,
+    CONSCRIPT_NAME: process.env.CONSCRIPT_NAME
+  }
 }
