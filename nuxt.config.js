@@ -2,14 +2,14 @@ export default {
   target: 'static',
 
   head: {
-    title: `${process.env.CONSCRIPT_NAME} TJ COUNTER`,
+    title: `${process.env.CONSCRIPT_NAME} TJ counter`,
     htmlAttrs: {
       lang: 'en'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: `${process.env.CONSCRIPT_NAME} TJ counter` },
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [

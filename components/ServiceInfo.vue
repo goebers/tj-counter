@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import { format, differenceInDays, addDays, compareDesc, compareAsc } from 'date-fns';
+import { format, differenceInDays, addDays, compareDesc, startOfDay } from 'date-fns';
 
 export default {
   name: 'Content',
@@ -57,7 +57,8 @@ export default {
     return {
       serviceStartDate: new Date(process.env.START_DATE),
       serviceEndDate: addDays(new Date(process.env.START_DATE), process.env.SERVICE_DAYS),
-      serviceLenght: process.env.SERVICE_DAYS
+      serviceLenght: process.env.SERVICE_DAYS,
+      currentDate: startOfDay(new Date())
     }
   },
   computed: {
@@ -83,7 +84,7 @@ export default {
       return format(this.serviceEndDate, 'Y');
     },
     serviceIsDone() {
-      const dateComparison = compareDesc(new Date(), this.serviceEndDate);
+      const dateComparison = compareDesc(this.currentDate, this.serviceEndDate);
 
       if (dateComparison == -1) {
         return true;
@@ -92,16 +93,16 @@ export default {
       }
     },
     tjCounter() {
-      return differenceInDays (new Date(), this.serviceStartDate);
+      return differenceInDays (this.currentDate, this.serviceStartDate);
     },
     serviceCompletedCounter() {
-      return differenceInDays (new Date(), this.serviceEndDate);
+      return differenceInDays (this.currentDate, this.serviceEndDate);
     },
     serviceStartsCounter() {
-      return differenceInDays (this.serviceStartDate, new Date());
+      return differenceInDays (this.serviceStartDate, this.currentDate);
     },
     serviceStarted() {
-      const dateComparison = compareDesc(new Date(), this.serviceStartDate);
+      const dateComparison = compareDesc(this.currentDate, this.serviceStartDate);
 
       if (dateComparison == -1 || dateComparison == 0) {
         return true;
