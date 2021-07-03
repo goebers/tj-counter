@@ -52,11 +52,11 @@
 import { format, differenceInDays, addDays, compareDesc, startOfDay } from 'date-fns';
 
 export default {
-  name: 'Content',
+  name: 'ServiceInfo',
   data() {
     return {
-      serviceStartDate: new Date(process.env.START_DATE),
-      serviceEndDate: addDays(new Date(process.env.START_DATE), process.env.SERVICE_DAYS),
+      serviceStartDate: startOfDay(new Date(process.env.START_DATE)),
+      serviceEndDate: addDays(startOfDay(new Date(process.env.START_DATE)), process.env.SERVICE_DAYS),
       serviceLenght: process.env.SERVICE_DAYS,
       currentDate: startOfDay(new Date())
     }
@@ -93,7 +93,7 @@ export default {
       }
     },
     tjCounter() {
-      return differenceInDays (this.currentDate, this.serviceStartDate);
+      return differenceInDays (this.serviceEndDate, this.currentDate);
     },
     serviceCompletedCounter() {
       return differenceInDays (this.currentDate, this.serviceEndDate);
