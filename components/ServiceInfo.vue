@@ -1,26 +1,13 @@
 <template>
   <div class="service-info">
-    <h3 class="service-info__total-text">
-      In total {{ conscriptName }} has to serve
-      <span class="highlight">
-        {{ serviceLenght }} days
-      </span>
-      in the army.
-    </h3>
     <div v-if="serviceStarted">
-      <h3 class="service-info__intro-text">
-        Their service started on
-      <span class="highlight">
-        {{ serviceStartDay }} of {{ serviceStartMonth }} {{ serviceStartYear }}
-      </span>
-      </h3>
       <h1
         v-if="!serviceIsDone"
         class="service-info__service-text"
       >
         {{ conscriptName }} has
         <span class="highlight">
-          {{ tjCounter }} days
+          {{ tjCounter }} mornings
         </span>
         left
       </h1>
@@ -37,15 +24,35 @@
           {{ serviceEndDay }} of {{ serviceEndMonth }} {{ serviceEndYear }}
         </span>
       </h1>
+      <h3 class="service-info__intro-text">
+        Service started on:
+      <span class="highlight">
+        {{ serviceStartDay }} of {{ serviceStartMonth }} {{ serviceStartYear }}
+      </span>
+      </h3>
     </div>
     <div v-else>
       <h1 class="service-info__intro-text">
-        Their service starts in
+        Their conscription service starts in
         <span class="highlight">
           {{ serviceStartsCounter }} days
         </span>
       </h1>
     </div>
+    <h3 v-if="!serviceIsDone && serviceStarted" class="service-info__total-text">
+      {{ conscriptName }} has to serve
+      <span class="highlight">
+        {{ serviceLength }} days
+      </span>
+      in the army.
+    </h3>
+    <h3 v-else-if="serviceIsDone && !serviceStarted" class="service-info__total-text">
+      {{ conscriptName }} served
+      <span class="highlight">
+        {{ serviceLength }} days
+      </span>
+      in the army.
+    </h3>
   </div>
 </template>
 <script>
@@ -56,8 +63,8 @@ export default {
   data() {
     return {
       serviceStartDate: startOfDay(new Date(process.env.START_DATE)),
-      serviceEndDate: addDays(startOfDay(new Date(process.env.START_DATE)), process.env.SERVICE_DAYS),
-      serviceLenght: process.env.SERVICE_DAYS,
+      serviceEndDate: addDays(new Date(process.env.START_DATE), process.env.SERVICE_DAYS),
+      serviceLength: process.env.SERVICE_DAYS,
       currentDate: startOfDay(new Date())
     }
   },
@@ -86,14 +93,15 @@ export default {
     serviceIsDone() {
       const dateComparison = compareDesc(this.currentDate, this.serviceEndDate);
 
-      if (dateComparison == -1) {
+      if (dateComparison == -1 || dateComparison == 0) {
         return true;
       } else {
         return false;
       }
     },
     tjCounter() {
-      return differenceInDays (this.serviceEndDate, this.currentDate);
+      // Remove 1 day from the calculation to get the remaining mornings
+      return differenceInDays (this.serviceEndDate, this.currentDate) - 1;
     },
     serviceCompletedCounter() {
       return differenceInDays (this.currentDate, this.serviceEndDate);
